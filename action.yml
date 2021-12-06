@@ -6,7 +6,7 @@ inputs:
   check_name:
     required: true
     default: "BackstopJS visual test"
-  command:
+  approve_command:
     required: true
     default: "backstop approve"
 runs:
