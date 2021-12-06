@@ -1,0 +1,22 @@
+{
+  "name": "action-backstop-review",
+  "version": "0.0.1",
+  "main": "index.js",
+  "engines": {
+    "node": "~12",
+    "npm": "~6"
+  },
+  "scripts": {
+    "build": "ncc build index.ts --license licenses.txt"
+  },
+  "author": "Lasse Borly <lasse@reload.dk>",
+  "private": "true",
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/github": "^5.0.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.33.0",
+    "typescript": "^4.5.2"
+  }
+}
