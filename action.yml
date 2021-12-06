@@ -1,13 +1,11 @@
-name: 'Backstop Review'
-description: 'Runs whenever detecting a PR comment and setting a failed backstop check to success.'
+name: "Backstop Review"
+description: "Runs whenever detecting a PR comment and setting a failed backstop check to success."
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  github_token:
     required: true
-    default: 'World'
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  visual:
+    description: "Is it successfull"
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "dist/index.js"
