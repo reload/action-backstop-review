@@ -8327,18 +8327,19 @@ function run() {
                     const owner = repository.owner.login;
                     const issue = payload.issue;
                     if (issue) {
-                        const response = yield octokit.rest.pulls.get({
+                        const pull = yield octokit.rest.pulls.get({
                             owner,
                             repo,
                             pull_number: issue.number,
                         });
-                        console.info(JSON.stringify(response, undefined, 2));
+                        const ref = pull.data.head.ref;
+                        const checks = yield octokit.rest.checks.listForRef({
+                            owner,
+                            repo,
+                            ref,
+                        });
+                        console.info(JSON.stringify(checks, undefined, 2));
                     }
-                    // const response = await octokit.rest.checks.listForRef({
-                    //   owner,
-                    //   repo,
-                    //   ref: "",
-                    // });
                 }
                 core.setOutput("visual", "ok");
                 console.info("set visual test to ok");
