@@ -8332,13 +8332,14 @@ function run() {
                             repo,
                             pull_number: issue.number,
                         });
+                        console.info("pull: ", JSON.stringify(pull, undefined, 2));
                         const ref = pull.data.head.ref;
                         const checks = yield octokit.rest.checks.listForRef({
                             owner,
                             repo,
                             ref,
                         });
-                        console.info(JSON.stringify(checks, undefined, 2));
+                        console.info("check: ", JSON.stringify(checks, undefined, 2));
                     }
                 }
                 core.setOutput("visual", "ok");
