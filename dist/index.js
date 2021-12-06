@@ -8319,7 +8319,7 @@ function run() {
                 core.setFailed("Missing github token");
                 return;
             }
-            if (comment && comment.body && comment.body === "@visual ok") {
+            if (comment && comment.body && comment.body === "visual-test ok") {
                 const octokit = github.getOctokit(token);
                 const repository = payload.repository;
                 if (repository) {
