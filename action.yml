@@ -5,7 +5,7 @@ inputs:
     required: true
 outputs:
   visual:
-    description: "Is it successfull"
+    description: "Is it successful"
 runs:
   using: "node12"
   main: "dist/index.js"

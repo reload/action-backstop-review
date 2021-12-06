@@ -8332,7 +8332,6 @@ function run() {
                             repo,
                             pull_number: issue.number,
                         });
-                        console.info("pull: ", JSON.stringify(pull, undefined, 2));
                         const ref = pull.data.head.ref;
                         const checks = yield octokit.rest.checks.listForRef({
                             owner,
