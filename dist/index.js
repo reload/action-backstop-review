@@ -8297,24 +8297,63 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
-try {
-    const payload = github.context.payload;
-    const comment = payload.comment;
-    if (comment && comment.body && comment.body === "@visual ok") {
-        core.setOutput("visual", "ok");
-        console.info("set visual test to ok");
-    }
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const payload = github.context.payload;
+            const comment = payload.comment;
+            const token = core.getInput("github_token");
+            if (!token) {
+                core.setFailed("Missing github token");
+                return;
+            }
+            if (comment && comment.body && comment.body === "@visual ok") {
+                const octokit = github.getOctokit(token);
+                const repository = payload.repository;
+                if (repository) {
+                    const repo = repository.name;
+                    const owner = repository.owner.login;
+                    const issue = payload.issue;
+                    if (issue) {
+                        const response = yield octokit.rest.pulls.get({
+                            owner,
+                            repo,
+                            pull_number: issue.number,
+                        });
+                        console.info(JSON.stringify(response, undefined, 2));
+                    }
+                    // const response = await octokit.rest.checks.listForRef({
+                    //   owner,
+                    //   repo,
+                    //   ref: "",
+                    // });
+                }
+                core.setOutput("visual", "ok");
+                console.info("set visual test to ok");
+            }
+        }
+        catch (error) {
+            let message = "Something went wrong";
+            if (error instanceof Error) {
+                message = error.message;
+            }
+            core.setFailed(message);
+        }
+    });
 }
-catch (error) {
-    let message = "Something went wrong";
-    if (error instanceof Error) {
-        message = error.message;
-    }
-    core.setFailed(message);
-}
+run();
 
 
 /***/ }),
