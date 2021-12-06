@@ -3,6 +3,7 @@ import * as github from "@actions/github";
 
 async function run() {
   try {
+    console.info(JSON.stringify(process.versions, undefined, 2));
     const payload = github.context.payload;
     const comment = payload.comment;
     const token = core.getInput("github_token");
@@ -61,6 +62,8 @@ async function run() {
         check_run_id: check.id,
         conclusion: "success",
       });
+
+      core.notice(`${checkName} was marked as successful!`);
     }
   } catch (error) {
     let message: string = "Something went wrong";

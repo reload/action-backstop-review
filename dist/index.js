@@ -8312,6 +8312,7 @@ const github = __importStar(__nccwpck_require__(5438));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            console.info(JSON.stringify(process.versions, undefined, 2));
             const payload = github.context.payload;
             const comment = payload.comment;
             const token = core.getInput("github_token");
@@ -8356,6 +8357,7 @@ function run() {
                     check_run_id: check.id,
                     conclusion: "success",
                 });
+                core.notice(`${checkName} was marked as successful!`);
             }
         }
         catch (error) {
