@@ -23,19 +23,19 @@ async function run() {
         const issue = payload.issue;
 
         if (issue) {
-          const response = await octokit.rest.pulls.get({
+          const pull = await octokit.rest.pulls.get({
             owner,
             repo,
             pull_number: issue.number,
           });
-          console.info(JSON.stringify(response, undefined, 2));
+          const ref = pull.data.head.ref;
+          const checks = await octokit.rest.checks.listForRef({
+            owner,
+            repo,
+            ref,
+          });
+          console.info(JSON.stringify(checks, undefined, 2));
         }
-
-        // const response = await octokit.rest.checks.listForRef({
-        //   owner,
-        //   repo,
-        //   ref: "",
-        // });
       }
 
       core.setOutput("visual", "ok");
