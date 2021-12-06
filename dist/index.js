@@ -8338,7 +8338,9 @@ function run() {
                             repo,
                             ref,
                         });
-                        console.info("check: ", JSON.stringify(checks, undefined, 2));
+                        const checkName = core.getInput("check_name");
+                        const failedVisualChecks = checks.data.check_runs.filter((check) => check.name === checkName && check.conclusion !== "success");
+                        console.info("failed: ", JSON.stringify(failedVisualChecks, undefined, 2));
                     }
                 }
                 core.setOutput("visual", "ok");

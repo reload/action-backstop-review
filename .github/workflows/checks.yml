@@ -11,11 +11,11 @@ jobs:
       - uses: LouisBrunner/checks-action@v1.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: Test Basic Failure
+          name: BackstopJS visual test
           conclusion: failure
 
       - uses: LouisBrunner/checks-action@v1.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: Test Basic Success
+          name: BackstopJS visual test
           conclusion: success
