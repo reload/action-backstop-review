@@ -3,68 +3,72 @@ import * as github from "@actions/github";
 
 async function run() {
   try {
-    console.info(JSON.stringify(process.versions, undefined, 2));
     const payload = github.context.payload;
     const comment = payload.comment;
     const token = core.getInput("github_token");
     const checkName = core.getInput("check_name");
     const approveCommand = core.getInput("approve_comment");
 
-    if (comment && comment.body && comment.body === approveCommand) {
-      const octokit = github.getOctokit(token);
+    const shouldRun = comment?.body === approveCommand;
 
-      const repository = payload.repository;
-
-      if (!repository) {
-        core.setFailed("Could not find repository.");
-        return;
-      }
-
-      const repo = repository.name;
-      const owner = repository.owner.login;
-      const issue = payload.issue;
-
-      if (!issue) {
-        core.setFailed("Could not find issue/pull request.");
-        return;
-      }
-
-      const pull = await octokit.rest.pulls.get({
-        owner,
-        repo,
-        pull_number: issue.number,
-      });
-      const ref = pull.data.head.ref;
-
-      const checks = await octokit.rest.checks.listForRef({
-        owner,
-        repo,
-        ref,
-      });
-
-      const checkNames = checks.data.check_runs
-        .map((check) => check.name)
-        .join(", ");
-      const check = checks.data.check_runs.find(
-        (check) => check.name === checkName
-      );
-
-      if (!check) {
-        core.setFailed(
-          `Could not find a check with the name: ${checkName}. Possible names are: [${checkNames}]`
-        );
-        return;
-      }
-
-      await octokit.rest.checks.update({
-        owner,
-        repo,
-        check_run_id: check.id,
-        conclusion: "success",
-      });
-
-      core.notice(`${checkName} was marked as successful!`);
+    if (!shouldRun) {
+      core.notice(`${checkName} was skipped.`);
+      return;
     }
+
+    const octokit = github.getOctokit(token);
+
+    const repository = payload.repository;
+
+    if (!repository) {
+      core.setFailed("Could not find repository.");
+      return;
+    }
+
+    const repo = repository.name;
+    const owner = repository.owner.login;
+    const pull_number = payload.issue?.number;
+
+    if (!pull_number) {
+      core.setFailed("Could not find issue/pull request.");
+      return;
+    }
+
+    const pull = await octokit.rest.pulls.get({
+      owner,
+      repo,
+      pull_number,
+    });
+    const ref = pull.data.head.ref;
+
+    const checks = await octokit.rest.checks.listForRef({
+      owner,
+      repo,
+      ref,
+    });
+
+    const checkNames = checks.data.check_runs
+      .map((check) => check.name)
+      .join(", ");
+    const check = checks.data.check_runs.find(
+      (check) => check.name === checkName
+    );
+
+    if (!check) {
+      core.setFailed(
+        `Could not find a check with the name: ${checkName}. Possible names are: [${checkNames}]`
+      );
+      return;
+    }
+
+    await octokit.rest.checks.update({
+      owner,
+      repo,
+      check_run_id: check.id,
+      conclusion: "success",
+    });
+
+    core.notice(`${checkName} was marked as successful!`);
   } catch (error) {
     let message: string = "Something went wrong";
     if (error instanceof Error) {
