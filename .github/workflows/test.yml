@@ -1,11 +1,13 @@
 name: Test
 
 on:
-  pull_request_review_comment:
+  # https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#issue_comment
+  issue_comment:
     types: [created]
 
 jobs:
   test:
+    if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
