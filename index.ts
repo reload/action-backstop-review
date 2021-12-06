@@ -3,7 +3,7 @@ import * as github from "@actions/github";
 
 try {
   const nameToGreet: string = core.getInput("who-to-greet");
-  console.info(`Hello ${nameToGreet}!`);
+  console.info(`Hello ${nameToGreet}! and all of the rest.`);
 
   const time: string = new Date().toTimeString();
   core.setOutput("time", time);
