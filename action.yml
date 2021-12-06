@@ -6,9 +6,9 @@ inputs:
   check_name:
     required: true
     default: "BackstopJS visual test"
-  approve_command:
+  approve_comment:
     required: true
-    default: "backstop approve"
+    default: "backstop-check approve"
 runs:
   using: "node16"
   main: "dist/index.js"

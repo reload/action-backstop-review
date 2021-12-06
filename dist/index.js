@@ -8316,7 +8316,7 @@ function run() {
             const comment = payload.comment;
             const token = core.getInput("github_token");
             const checkName = core.getInput("check_name");
-            const approveCommand = core.getInput("approve_command");
+            const approveCommand = core.getInput("approve_comment");
             if (comment && comment.body && comment.body === approveCommand) {
                 const octokit = github.getOctokit(token);
                 const repository = payload.repository;
