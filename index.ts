@@ -10,11 +10,7 @@ async function run() {
     const approveCommand = core.getInput("approve_comment");
 
     const shouldRun = comment?.body === approveCommand;
-
-    if (!shouldRun) {
-      core.notice(`${checkName} was skipped.`);
-      return;
-    }
+    if (!shouldRun) return;
 
     const octokit = github.getOctokit(token);
 
