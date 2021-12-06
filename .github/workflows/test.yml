@@ -12,5 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
+        name: Approve BackstopJS
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          check_name: BackstopJS visual test
+          approve_command: backstop-check approve
+      - uses: ./
+        name: Approve ESLint
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          check_name: ESLint
+          approve_command: eslint-check approve

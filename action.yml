@@ -1,14 +1,14 @@
-name: "Backstop Review"
-description: "Runs whenever detecting a PR comment and setting a failed backstop check to success."
+name: "Approve failure"
+description: "Approve any check no matter it's actual conclusion."
 inputs:
   github_token:
     required: true
   check_name:
     required: true
     default: "BackstopJS visual test"
-outputs:
-  visual:
-    description: "Is it successful"
+  command:
+    required: true
+    default: "backstop approve"
 runs:
   using: "node12"
   main: "dist/index.js"

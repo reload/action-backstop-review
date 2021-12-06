@@ -6,13 +6,15 @@ async function run() {
     const payload = github.context.payload;
     const comment = payload.comment;
     const token = core.getInput("github_token");
+    const checkName = core.getInput("check_name");
+    const approveCommand = core.getInput("approve_command");
 
     if (!token) {
       core.setFailed("Missing github token");
       return;
     }
 
-    if (comment && comment.body && comment.body === "visual-test ok") {
+    if (comment && comment.body && comment.body === approveCommand) {
       const octokit = github.getOctokit(token);
 
       const repository = payload.repository;
@@ -35,27 +37,23 @@ async function run() {
             repo,
             ref,
           });
-          const checkName = core.getInput("check_name");
-          const failedVisualChecks = checks.data.check_runs.filter(
-            (check) =>
-              check.name === checkName && check.conclusion !== "success"
+
+          const check = checks.data.check_runs.find(
+            (check) => check.name === checkName
           );
 
-          await Promise.all(
-            failedVisualChecks.map(async (check) => {
-              const updateResponse = await octokit.rest.checks.update({
-                owner,
-                repo,
-                check_run_id: check.id,
-                conclusion: "success",
-              });
-              console.info(
-                "update response: ",
-                JSON.stringify(updateResponse, undefined, 2)
-              );
-              return updateResponse;
-            })
-          );
+          if (check) {
+            const updateResponse = await octokit.rest.checks.update({
+              owner,
+              repo,
+              check_run_id: check.id,
+              conclusion: "success",
+            });
+            console.info(
+              "update response: ",
+              JSON.stringify(updateResponse, undefined, 2)
+            );
+          }
         }
       }
 
