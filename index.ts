@@ -47,7 +47,7 @@ async function run() {
                 owner,
                 repo,
                 check_run_id: check.id,
-                conclustion: "success",
+                conclusion: "success",
               });
               console.info(
                 "update response: ",

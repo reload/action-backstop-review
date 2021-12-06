@@ -8345,7 +8345,7 @@ function run() {
                                 owner,
                                 repo,
                                 check_run_id: check.id,
-                                conclustion: "success",
+                                conclusion: "success",
                             });
                             console.info("update response: ", JSON.stringify(updateResponse, undefined, 2));
                             return updateResponse;
