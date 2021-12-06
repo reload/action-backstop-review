@@ -11,7 +11,7 @@ try {
   const payload: string = JSON.stringify(github.context.payload, undefined, 2);
   console.info(`The event payload: ${payload}`);
 } catch (error) {
-  let message: string = "Something went wrong";
+  let message: string = "Something went very wrong";
   if (error instanceof Error) {
     message = error.message;
   }
