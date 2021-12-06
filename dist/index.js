@@ -8302,7 +8302,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 try {
     const nameToGreet = core.getInput("who-to-greet");
-    console.info(`Hello ${nameToGreet}!`);
+    console.info(`Hello ${nameToGreet}! and all of the rest.`);
     const time = new Date().toTimeString();
     core.setOutput("time", time);
     // Get the JSON webhook payload for the event that triggered the workflow
