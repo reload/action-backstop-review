@@ -41,9 +41,20 @@ async function run() {
               check.name === checkName && check.conclusion !== "success"
           );
 
-          console.info(
-            "failed: ",
-            JSON.stringify(failedVisualChecks, undefined, 2)
+          await Promise.all(
+            failedVisualChecks.map(async (check) => {
+              const updateResponse = await octokit.rest.checks.update({
+                owner,
+                repo,
+                check_run_id: check.id,
+                conclustion: "success",
+              });
+              console.info(
+                "update response: ",
+                JSON.stringify(updateResponse, undefined, 2)
+              );
+              return updateResponse;
+            })
           );
         }
       }

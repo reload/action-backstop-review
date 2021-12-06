@@ -8340,7 +8340,16 @@ function run() {
                         });
                         const checkName = core.getInput("check_name");
                         const failedVisualChecks = checks.data.check_runs.filter((check) => check.name === checkName && check.conclusion !== "success");
-                        console.info("failed: ", JSON.stringify(failedVisualChecks, undefined, 2));
+                        yield Promise.all(failedVisualChecks.map((check) => __awaiter(this, void 0, void 0, function* () {
+                            const updateResponse = yield octokit.rest.checks.update({
+                                owner,
+                                repo,
+                                check_run_id: check.id,
+                                conclustion: "success",
+                            });
+                            console.info("update response: ", JSON.stringify(updateResponse, undefined, 2));
+                            return updateResponse;
+                        })));
                     }
                 }
                 core.setOutput("visual", "ok");
