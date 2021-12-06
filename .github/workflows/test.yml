@@ -25,3 +25,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           check_name: ESLint
           approve_command: eslint-check approve
+
+      - uses: ./
+        name: Approve Cypress
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          check_name: Cypress
+          approve_command: cypress-check approve
