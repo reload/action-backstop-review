@@ -8319,10 +8319,8 @@ function run() {
             const checkName = core.getInput("check_name");
             const approveCommand = core.getInput("approve_comment");
             const shouldRun = (comment === null || comment === void 0 ? void 0 : comment.body) === approveCommand;
-            if (!shouldRun) {
-                core.notice(`${checkName} was skipped.`);
+            if (!shouldRun)
                 return;
-            }
             const octokit = github.getOctokit(token);
             const repository = payload.repository;
             if (!repository) {
