@@ -8310,7 +8310,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 function run() {
-    var _a;
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const payload = github.context.payload;
@@ -8347,18 +8347,18 @@ function run() {
                 repo,
                 ref,
             });
-            const checkNames = checks.data.check_runs
-                .map((check) => check.name)
-                .join(", ");
-            const check = checks.data.check_runs.find((check) => check.name === checkName);
-            if (!check) {
+            const check_run_id = (_b = checks.data.check_runs.find((check) => check.name === checkName)) === null || _b === void 0 ? void 0 : _b.id;
+            if (!check_run_id) {
+                const checkNames = checks.data.check_runs
+                    .map((check) => check.name)
+                    .join(", ");
                 core.setFailed(`Could not find a check with the name: ${checkName}. Possible names are: [${checkNames}]`);
                 return;
             }
             yield octokit.rest.checks.update({
                 owner,
                 repo,
-                check_run_id: check.id,
+                check_run_id,
                 conclusion: "success",
             });
             core.notice(`${checkName} was marked as successful!`);

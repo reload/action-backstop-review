@@ -47,14 +47,14 @@ async function run() {
       ref,
     });
 
-    const checkNames = checks.data.check_runs
-      .map((check) => check.name)
-      .join(", ");
-    const check = checks.data.check_runs.find(
+    const check_run_id = checks.data.check_runs.find(
       (check) => check.name === checkName
-    );
+    )?.id;
 
-    if (!check) {
+    if (!check_run_id) {
+      const checkNames = checks.data.check_runs
+        .map((check) => check.name)
+        .join(", ");
       core.setFailed(
         `Could not find a check with the name: ${checkName}. Possible names are: [${checkNames}]`
       );
@@ -64,7 +64,7 @@ async function run() {
     await octokit.rest.checks.update({
       owner,
       repo,
-      check_run_id: check.id,
+      check_run_id,
       conclusion: "success",
     });
 
